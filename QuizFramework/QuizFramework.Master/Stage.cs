@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Master
+namespace QuizFramework.Master
 {
     /// <summary>
     /// It contains question and answer variants to this one

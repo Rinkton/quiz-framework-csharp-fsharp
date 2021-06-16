@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Slave;
 
-namespace Master
+namespace QuizFramework.Master
 {
     public class Quiz
     {
