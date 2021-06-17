@@ -36,7 +36,7 @@ namespace QuizFramework.Master
 
                     string userInput = Console.ReadLine();
 
-                    if (Funcs.UserInputIsCorrect(userInput) == false)
+                    if (Funcs.UserInputIsCorrect(userInput, stage.Answers.Length) == false)
                     {
                         Console.WriteLine(Const.UserInputIsIncorrectMessage);
                         Console.ReadKey();
