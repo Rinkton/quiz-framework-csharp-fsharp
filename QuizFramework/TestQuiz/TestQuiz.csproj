@@ -6,8 +6,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FSharp.Core" Version="4.5.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="QuizFramework.Master">
       <HintPath>..\QuizFramework.Master\bin\Debug\netcoreapp2.1\QuizFramework.Master.dll</HintPath>
+    </Reference>
+    <Reference Include="Slave">
+      <HintPath>..\QuizFramework.Master\bin\Debug\netcoreapp2.1\Slave.dll</HintPath>
     </Reference>
   </ItemGroup>
 

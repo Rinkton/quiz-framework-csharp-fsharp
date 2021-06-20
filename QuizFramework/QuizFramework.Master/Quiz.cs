@@ -22,65 +22,79 @@ namespace QuizFramework.Master
 
         public Result Run()
         {
-            try
+            if(System.Diagnostics.Debugger.IsAttached)
             {
-                stagesRightnessQueue = new List<bool>();
-
-                Console.WriteLine(Const.GreetingMessage(Title));
-                Console.ReadKey();
-
-                foreach (Stage stage in Stages)
+                runCode();
+            }
+            else
+            {
+                try
                 {
-                    Console.WriteLine(stage.Question);
-                    Funcs.GetOutputAnswerTexts(getAnswerTexts(stage.Answers));
+                    runCode();
+                }
+                catch
+                {
+                    return Result.Error;
+                }
+            }
 
-                    string userInput = Console.ReadLine();
+            return Result.Ok;
+        }
 
-                    if (Funcs.UserInputIsCorrect(userInput, stage.Answers.Length) == false)
-                    {
-                        Console.WriteLine(Const.UserInputIsIncorrectMessage);
-                        Console.ReadKey();
-                        continue;
-                    }
+        // TODO: It's need a better name
+        private void runCode()
+        {
+            stagesRightnessQueue = new List<bool>();
 
-                    int userChoice = Convert.ToInt32(userInput);
+            Console.WriteLine(Const.GreetingMessage(Title));
+            Console.ReadKey();
 
-                    bool isRight = stage.Answers[userChoice - 1].Right;
-                    stagesRightnessQueue.Add(isRight);
+            foreach (Stage stage in Stages)
+            {
+                restartIteration:
+                Console.WriteLine(stage.Question.Text);
+                Console.WriteLine(Funcs.GetOutputAnswerTexts(getAnswerTexts(stage.Answers)));
 
-                    if(isRight)
-                    {
-                        Console.WriteLine(Const.RightAnswerMessage);
-                    }
-                    else
-                    {
-                        //TODO: It possible to solve with FP way
-                        List<int> rightAnswerNumbersList = new List<int>();
-                        for (int i = 0; i < stage.Answers.Length; i++)
-                        {
-                            if(stage.Answers[i].Right)
-                            {
-                                rightAnswerNumbersList.Add(i);
-                            }
-                        }
+                string userInput = Console.ReadLine();
 
-                        Console.WriteLine(Const.NotRightAnswerMessage(rightAnswerNumbersList.ToArray()));
-                    }
-
+                if (Funcs.UserInputIsCorrect(userInput, stage.Answers.Length) == false)
+                {
+                    Console.WriteLine(Const.UserInputIsIncorrectMessage);
                     Console.ReadKey();
+                    goto restartIteration;
                 }
 
-                Console.WriteLine(Const.TotalMessage);
-                Console.WriteLine(Funcs.GetOutputTotal(stagesRightnessQueue.ToArray()));
+                int userChoice = Convert.ToInt32(userInput);
+
+                bool isRight = stage.Answers[userChoice - 1].Right;
+                stagesRightnessQueue.Add(isRight);
+
+                if (isRight)
+                {
+                    Console.WriteLine(Const.RightAnswerMessage);
+                }
+                else
+                {
+                    //TODO: It possible to solve with FP way
+                    List<int> rightAnswerNumbersList = new List<int>();
+                    for (int i = 0; i < stage.Answers.Length; i++)
+                    {
+                        if (stage.Answers[i].Right)
+                        {
+                            rightAnswerNumbersList.Add(i+1);
+                        }
+                    }
+
+                    Console.WriteLine(Const.NotRightAnswerMessage(rightAnswerNumbersList.ToArray()));
+                }
 
                 Console.ReadKey();
+            }
 
-                return Result.Ok;
-            }
-            catch
-            {
-                return Result.Error;
-            }
+            Console.WriteLine(Const.TotalMessage);
+            Console.WriteLine(Funcs.GetOutputTotal(stagesRightnessQueue.ToArray()));
+
+            Console.ReadKey();
         }
 
         private string[] getAnswerTexts(Answer[] answers)
