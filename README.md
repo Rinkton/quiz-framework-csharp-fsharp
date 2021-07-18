@@ -7,4 +7,5 @@ It contains those projects in itself solution:
 * Slave - A project, that contains pure functions QuizFramework.Master use for accomplish ownself tasks (.NET Standard F#)
 * SlaveUnit - Unit tests for Slave (.NET Framework C#)
 * TestQuiz - Contains test program(quiz), that using a QuizFramework.Master (.NET Core C#)
+
 (More detailized description of those projects contains in their ownself README)
